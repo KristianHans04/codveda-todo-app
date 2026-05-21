@@ -3,47 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Task manager with CRUD operations, localStorage persistence, filtering tabs, and inline editing. Built with HTML, CSS, and vanilla JavaScript.">
-  <title>Todo App | Codveda Level 2</title>
+  <meta name="description" content="Feature-rich task manager with priorities, due dates, categories, drag-and-drop, search, undo delete, and statistics. Built with vanilla JavaScript.">
+  <title>TaskFlow | Smart Task Manager</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a0a2e'/%3E%3Cpath d='M8 16l5 5 11-11' fill='none' stroke='%238b5cf6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-  <a href="#task-input" class="sr-only" onfocus="this.style.clip='auto';this.style.width='auto';this.style.height='auto'" onblur="this.className='sr-only'">Skip to task input</a>
+  <a href="#task-input" class="sr-only">Skip to task input</a>
 
-  <header class="app-header" role="banner">
-    <h1>Task Manager</h1>
-    <p>Create, edit, complete, and delete tasks. Saved automatically.</p>
-  </header>
+  <div class="app-shell">
+    <!-- Header -->
+    <header class="app-header">
+      <h1>TaskFlow <span class="task-count-badge" id="total-badge">0</span></h1>
+      <p>Priorities, due dates, drag-and-drop, and more. Press <kbd>?</kbd> for shortcuts.</p>
+    </header>
 
-  <main class="app-container" role="main">
-    <!-- Add Task -->
-    <form class="add-form" id="add-form" aria-label="Add a new task">
-      <input
-        type="text"
-        id="task-input"
-        placeholder="What needs to be done?"
-        autocomplete="off"
-        aria-label="Task description"
-        maxlength="200"
-        required
-      >
-      <button type="submit">Add</button>
-    </form>
+    <!-- Stats Dashboard -->
+    <div class="glass-panel">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="stat-total">0</div>
+          <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-completed">0</div>
+          <div class="stat-label">Done</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-pending">0</div>
+          <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-overdue">0</div>
+          <div class="stat-label">Overdue</div>
+        </div>
+      </div>
+    </div>
 
-    <!-- Filter Tabs -->
-    <div class="filter-tabs" role="tablist" aria-label="Filter tasks">
-      <button class="filter-tab active" id="tab-all" role="tab" aria-selected="true">
-        All <span class="count" id="count-all">0</span>
-      </button>
-      <button class="filter-tab" id="tab-active" role="tab" aria-selected="false">
-        Active <span class="count" id="count-active">0</span>
-      </button>
-      <button class="filter-tab" id="tab-completed" role="tab" aria-selected="false">
-        Completed <span class="count" id="count-completed">0</span>
-      </button>
+    <!-- Add Task Panel -->
+    <div class="glass-panel">
+      <form class="add-form" id="add-form" aria-label="Add a new task">
+        <input
+          type="text"
+          id="task-input"
+          placeholder="What needs to be done?"
+          autocomplete="off"
+          aria-label="Task description"
+          maxlength="200"
+          required
+        >
+        <button type="submit" class="add-btn">Add</button>
+      </form>
+      <div class="task-options">
+        <select id="priority-select" aria-label="Priority level">
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+          <option value="high">High</option>
+          <option value="urgent">Urgent</option>
+        </select>
+        <input type="date" id="date-input" aria-label="Due date">
+        <input type="text" id="category-input" placeholder="Category" aria-label="Category" maxlength="30" style="background:var(--color-surface);border:1px solid var(--color-glass-border);border-radius:var(--radius-sm);padding:0.4rem 0.6rem;color:var(--color-text);font-size:0.8rem;font-family:var(--font);outline:none;max-width:120px;">
+      </div>
+    </div>
+
+    <!-- Controls: Search + Filters -->
+    <div class="glass-panel">
+      <div class="controls-bar">
+        <input type="text" class="search-input" id="search-input" placeholder="Search tasks..." aria-label="Search tasks">
+        <div class="filter-tabs" role="tablist" aria-label="Filter tasks">
+          <button class="filter-tab active" data-filter="all" role="tab">All</button>
+          <button class="filter-tab" data-filter="active" role="tab">Active</button>
+          <button class="filter-tab" data-filter="completed" role="tab">Done</button>
+        </div>
+      </div>
+      <div class="priority-filter" style="margin-top:0.5rem;">
+        <button class="priority-pill" data-p="low">Low</button>
+        <button class="priority-pill" data-p="medium">Medium</button>
+        <button class="priority-pill" data-p="high">High</button>
+        <button class="priority-pill" data-p="urgent">Urgent</button>
+      </div>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="bulk-bar" id="bulk-bar">
+      <span id="bulk-count">0 selected</span>
+      <button id="bulk-complete">Complete All</button>
+      <button id="bulk-delete">Delete All</button>
+      <button id="bulk-cancel">Cancel</button>
     </div>
 
     <!-- Task List -->
@@ -51,15 +100,42 @@
 
     <!-- Empty State -->
     <div class="empty-state" id="empty-state" role="status">
-      <p>No tasks yet. Add one above to get started.</p>
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="12" y="8" width="40" height="48" rx="4" stroke="currentColor" stroke-width="2"/>
+        <line x1="20" y1="22" x2="44" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <line x1="20" y1="32" x2="36" y2="32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <line x1="20" y1="42" x2="40" y2="42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <p>No tasks match your filters. Add one above or adjust filters.</p>
     </div>
 
-    <!-- Footer Stats -->
-    <div class="task-stats">
-      <span id="stats-left">0 items left</span>
-      <button class="clear-completed" id="clear-completed">Clear completed</button>
+    <!-- Footer -->
+    <div class="app-footer">
+      <span>Right-click a task to select for bulk actions. Drag to reorder.</span>
+      <div class="footer-actions">
+        <button class="footer-btn" id="export-btn" title="Export tasks as JSON">Export</button>
+        <button class="footer-btn" id="import-btn" title="Import tasks from JSON">Import</button>
+        <button class="footer-btn danger" id="clear-completed" title="Remove all completed tasks">Clear Done</button>
+      </div>
     </div>
-  </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Shortcuts Modal -->
+  <div class="shortcuts-modal" id="shortcuts-modal" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <div class="shortcuts-content">
+      <h2>Keyboard Shortcuts</h2>
+      <div class="shortcut-row"><span>Focus new task input</span><span class="shortcut-key">N</span></div>
+      <div class="shortcut-row"><span>Show this dialog</span><span class="shortcut-key">?</span></div>
+      <div class="shortcut-row"><span>Close dialogs</span><span class="shortcut-key">Esc</span></div>
+      <div class="shortcut-row"><span>Edit task</span><span class="shortcut-key">Click edit icon</span></div>
+      <div class="shortcut-row"><span>Select for bulk</span><span class="shortcut-key">Right-click</span></div>
+      <div class="shortcut-row"><span>Reorder tasks</span><span class="shortcut-key">Drag & Drop</span></div>
+      <button class="footer-btn" id="close-shortcuts" style="margin-top:1rem;width:100%;">Close</button>
+    </div>
+  </div>
 
   <script src="scripts/app.js"></script>
 </body>

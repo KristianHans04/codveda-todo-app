@@ -1,0 +1,187 @@
+/* =========================================================
+   Level-2-Todo-App — Task Manager Styles
+   Codveda brand, mobile-first
+   ========================================================= */
+
+:root {
+  --color-primary: #2563eb;
+  --color-primary-dark: #103eb2;
+  --color-primary-light: #7296f2;
+  --color-navy: #1b1f29;
+  --color-navy-deep: #141720;
+  --color-surface: #f9fbff;
+  --color-white: #ffffff;
+  --color-border: #e0e3eb;
+  --color-text: #1b1f29;
+  --color-text-secondary: #4b4f58;
+  --color-gold: #fcb900;
+  --color-red: #cf2e2e;
+  --color-success: #00d084;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:1rem;line-height:1.6;
+  color:var(--color-text);
+  background:var(--color-navy-deep);
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  -webkit-font-smoothing:antialiased;
+}
+button{cursor:pointer;font:inherit}
+input{font:inherit}
+
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);border:0;white-space:nowrap;
+}
+
+/* ---------- App Shell ---------- */
+.app-header{
+  width:100%;padding:var(--space-2xl) var(--space-lg) var(--space-lg);
+  text-align:center;color:var(--color-white);
+}
+.app-header h1{font-size:clamp(1.5rem,4vw,2rem);font-weight:700;margin-bottom:var(--space-xs)}
+.app-header p{font-size:0.875rem;color:rgba(255,255,255,0.5)}
+
+.app-container{
+  width:100%;max-width:560px;
+  padding:0 var(--space-lg) var(--space-2xl);
+}
+
+/* ---------- Add Task Form ---------- */
+.add-form{
+  display:flex;gap:var(--space-sm);margin-bottom:var(--space-lg);
+}
+.add-form input{
+  flex:1;padding:0.7rem 1rem;
+  background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.12);
+  border-radius:var(--radius-md);font-size:0.9375rem;
+  color:var(--color-white);
+  transition:border-color var(--transition-fast);
+}
+.add-form input::placeholder{color:rgba(255,255,255,0.3)}
+.add-form input:focus{border-color:var(--color-primary);outline:none}
+.add-form button{
+  padding:0.7rem 1.25rem;background:var(--color-primary);
+  color:var(--color-white);border:none;border-radius:var(--radius-md);
+  font-weight:600;white-space:nowrap;
+  transition:background var(--transition-fast);
+}
+.add-form button:hover{background:var(--color-primary-dark)}
+
+/* ---------- Filter Tabs ---------- */
+.filter-tabs{
+  display:flex;gap:var(--space-xs);margin-bottom:var(--space-lg);
+  background:rgba(255,255,255,0.05);
+  border-radius:var(--radius-md);padding:4px;
+}
+.filter-tab{
+  flex:1;padding:0.5rem;text-align:center;
+  font-size:0.8125rem;font-weight:600;
+  color:rgba(255,255,255,0.45);
+  border:none;background:transparent;border-radius:var(--radius-sm);
+  transition:color var(--transition-fast),background var(--transition-fast);
+}
+.filter-tab:hover{color:rgba(255,255,255,0.7)}
+.filter-tab.active{
+  background:var(--color-primary);color:var(--color-white);
+}
+.filter-tab .count{
+  margin-left:4px;font-size:0.6875rem;opacity:0.7;
+}
+
+/* ---------- Task List ---------- */
+.task-list{display:flex;flex-direction:column;gap:var(--space-sm)}
+
+.task-item{
+  display:flex;align-items:center;gap:var(--space-md);
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:var(--radius-md);
+  padding:0.75rem 1rem;
+  transition:background var(--transition-fast),border-color var(--transition-fast);
+}
+.task-item:hover{background:rgba(255,255,255,0.09)}
+.task-item.completed{opacity:0.5}
+.task-item.completed .task-text{text-decoration:line-through}
+
+/* Custom Checkbox */
+.task-check{
+  width:20px;height:20px;flex-shrink:0;
+  border:2px solid rgba(255,255,255,0.2);border-radius:4px;
+  background:transparent;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:background var(--transition-fast),border-color var(--transition-fast);
+  cursor:pointer;
+}
+.task-check svg{width:12px;height:12px;color:var(--color-white);opacity:0;transition:opacity var(--transition-fast)}
+.task-item.completed .task-check{
+  background:var(--color-success);border-color:var(--color-success);
+}
+.task-item.completed .task-check svg{opacity:1}
+
+/* Task Text */
+.task-text{
+  flex:1;font-size:0.9375rem;color:rgba(255,255,255,0.85);
+  border:none;background:transparent;
+  outline:none;
+}
+.task-text.editing{
+  border-bottom:1px solid var(--color-primary);
+  padding-bottom:2px;color:var(--color-white);
+}
+
+/* Task Actions */
+.task-actions{display:flex;gap:var(--space-xs);flex-shrink:0}
+.task-actions button{
+  width:28px;height:28px;border:none;border-radius:var(--radius-sm);
+  background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  transition:background var(--transition-fast);
+}
+.task-actions button svg{width:14px;height:14px;color:rgba(255,255,255,0.35)}
+.task-actions button:hover{background:rgba(255,255,255,0.1)}
+.task-actions button:hover svg{color:rgba(255,255,255,0.8)}
+.task-actions .delete-btn:hover{background:rgba(207,46,46,0.15)}
+.task-actions .delete-btn:hover svg{color:var(--color-red)}
+
+/* ---------- Empty State ---------- */
+.empty-state{
+  text-align:center;padding:var(--space-2xl);
+  color:rgba(255,255,255,0.25);
+}
+.empty-state p{font-size:0.9375rem}
+
+/* ---------- Footer Stats ---------- */
+.task-stats{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:var(--space-lg);
+  font-size:0.75rem;color:rgba(255,255,255,0.3);
+}
+.clear-completed{
+  background:none;border:none;
+  color:rgba(255,255,255,0.3);font-size:0.75rem;
+  transition:color var(--transition-fast);
+}
+.clear-completed:hover{color:var(--color-red)}

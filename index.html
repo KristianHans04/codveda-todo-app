@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Task manager with CRUD operations, localStorage persistence, filtering tabs, and inline editing. Built with HTML, CSS, and vanilla JavaScript.">
+  <title>Todo App | Codveda Level 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+  <a href="#task-input" class="sr-only" onfocus="this.style.clip='auto';this.style.width='auto';this.style.height='auto'" onblur="this.className='sr-only'">Skip to task input</a>
+
+  <header class="app-header" role="banner">
+    <h1>Task Manager</h1>
+    <p>Create, edit, complete, and delete tasks. Saved automatically.</p>
+  </header>
+
+  <main class="app-container" role="main">
+    <!-- Add Task -->
+    <form class="add-form" id="add-form" aria-label="Add a new task">
+      <input
+        type="text"
+        id="task-input"
+        placeholder="What needs to be done?"
+        autocomplete="off"
+        aria-label="Task description"
+        maxlength="200"
+        required
+      >
+      <button type="submit">Add</button>
+    </form>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs" role="tablist" aria-label="Filter tasks">
+      <button class="filter-tab active" id="tab-all" role="tab" aria-selected="true">
+        All <span class="count" id="count-all">0</span>
+      </button>
+      <button class="filter-tab" id="tab-active" role="tab" aria-selected="false">
+        Active <span class="count" id="count-active">0</span>
+      </button>
+      <button class="filter-tab" id="tab-completed" role="tab" aria-selected="false">
+        Completed <span class="count" id="count-completed">0</span>
+      </button>
+    </div>
+
+    <!-- Task List -->
+    <div class="task-list" id="task-list" role="list" aria-label="Task list"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state" role="status">
+      <p>No tasks yet. Add one above to get started.</p>
+    </div>
+
+    <!-- Footer Stats -->
+    <div class="task-stats">
+      <span id="stats-left">0 items left</span>
+      <button class="clear-completed" id="clear-completed">Clear completed</button>
+    </div>
+  </main>
+
+  <script src="scripts/app.js"></script>
+</body>
+</html>

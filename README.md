@@ -35,6 +35,15 @@ Level-2-Todo-App/
   README.md
 ```
 
+## Live Deployment
+
+| Environment | URL |
+|---|---|
+| Cloudflare Pages | https://codveda-todos.pages.dev |
+| Custom Domain | https://codveda-todos.kristianhans.com |
+
+Deployed via **GitHub auto-deploy**: every push to `main` triggers a new Cloudflare Pages build automatically.
+
 ## Getting Started
 
 ```bash
@@ -44,6 +53,8 @@ npx serve .
 ```
 
 Tasks persist in `localStorage` across browser sessions.
+
+Cloudflare Pages project name: `codveda-todos`
 
 ## Accessibility
 

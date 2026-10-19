@@ -251,9 +251,9 @@
 
         const isOverdue = task.dueDate && !task.completed && new Date(task.dueDate) < new Date();
         let metaHtml = '';
-        if (task.priority) metaHtml += `<span class="meta-badge">${task.priority}</span>`;
-        if (task.dueDate) metaHtml += `<span class="meta-badge ${isOverdue ? 'overdue' : ''}">${isOverdue ? 'Overdue: ' : ''}${task.dueDate}</span>`;
-        if (task.category) metaHtml += `<span class="meta-badge category">${task.category}</span>`;
+        if (task.priority) metaHtml += `<span class="meta-badge">${escapeHtml(task.priority)}</span>`;
+        if (task.dueDate) metaHtml += `<span class="meta-badge ${isOverdue ? 'overdue' : ''}">${isOverdue ? 'Overdue: ' : ''}${escapeHtml(task.dueDate)}</span>`;
+        if (task.category) metaHtml += `<span class="meta-badge category">${escapeHtml(task.category)}</span>`;
 
         el.innerHTML = `
           <div class="task-checkbox" role="checkbox" aria-checked="${task.completed}" tabindex="0">
